@@ -40,7 +40,7 @@ def create_app():
 
         image_file = request.files["file"]
 
-        if image_file.filename == "":
+        if image_file.filename == None:
             result = "File name is empty"
             write_log(result, None, app.config["DATABASE"])
             return "", 400
