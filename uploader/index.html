@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Upload</title>
+</head>
+<body>
+<h1>Upload Your Image</h1>
+
+<form id="ajax-upload" action="/upload" method="post" enctype="multipart/form-data">
+    File: <input type="file" name="file">
+    <button type="submit">Upload</button>
+</form>
+<div>
+    <div id="result"></div>
+</div>
+<script>
+    // http request를 요청합니다.
+    var request = new XMLHttpRequest()
+    request.onreadystatechange = function(){
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if(request.status === 200){
+                var result = document.getElementById("result")
+                var img = document.createElement("img");
+                var json = JSON.parse(request.response)
+                img.src = '/' + json["path"];
+                result.appendChild(img);
+            }
+        }
+    }
+    // 이벤트를 등록합니다.
+    document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById('ajax-upload').addEventListener("submit", function(e){
+            e.preventDefault()
+            console.log("DefaultRequest");
+            var form = e.target
+            var data = new FormData(form)
+            console.log(form.method)
+            console.log(form.action)
+            request.open(form.method, form.action)
+            request.send(data);
+            console.log("OutRequest");
+        })
+    })
+</script>
+</body>
+</html>
